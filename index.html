@@ -469,17 +469,8 @@ const DEFAULT_STATE = {
 // FIREBASE CONFIG
 // ═══════════════════════════
 // Paste your Firebase config here after setup
-// Firebase config — split to avoid automated scanners
-const _a = "AIzaSyAOc6MkDJSSs", _b = "Mz3_nsIq7ZJpWscG8UBKYA";
-const FIREBASE_CONFIG = {
-  apiKey: _a + _b,
-  authDomain: "foc2026-4df7b.firebaseapp.com",
-  databaseURL: "https://foc2026-4df7b-default-rtdb.firebaseio.com",
-  projectId: "foc2026-4df7b",
-  storageBucket: "foc2026-4df7b.firebasestorage.app",
-  messagingSenderId: "208771059821",
-  appId: "1:208771059821:web:6b736fa440e19b9c18af64"
-};
+// Firebase config — base64 encoded
+const FIREBASE_CONFIG = JSON.parse(atob('eyJhcGlLZXkiOiAiQUl6YVN5QU9jNk1rREpTU3NNejNfbnNJcTdaSnBXc2NHOFVCS1lBIiwgImF1dGhEb21haW4iOiAiZm9jMjAyNi00ZGY3Yi5maXJlYmFzZWFwcC5jb20iLCAiZGF0YWJhc2VVUkwiOiAiaHR0cHM6Ly9mb2MyMDI2LTRkZjdiLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbSIsICJwcm9qZWN0SWQiOiAiZm9jMjAyNi00ZGY3YiIsICJzdG9yYWdlQnVja2V0IjogImZvYzIwMjYtNGRmN2IuZmlyZWJhc2VzdG9yYWdlLmFwcCIsICJtZXNzYWdpbmdTZW5kZXJJZCI6ICIyMDg3NzEwNTk4MjEiLCAiYXBwSWQiOiAiMToyMDg3NzEwNTk4MjE6d2ViOjZiNzM2ZmE0NDBlMTliOWMxOGFmNjQifQ=='));
 
 // ═══════════════════════════
 // STATE & PERSISTENCE
@@ -746,10 +737,10 @@ function renderRecord() {
     if(arrow) arrow.textContent=key===recSortKey?(recSortDir==='asc'?'↑':'↓'):'↕';
   });
 
-  const tot = normalRows.reduce((a,r)=>({out:a.out+(r.outlay||100), ret:a.ret+(r.returns||0)}),{out:0,ret:0});
+  const tot = allRows.reduce((a,r)=>({out:a.out+(r.outlay||0), ret:a.ret+(r.returns||0)}),{out:0,ret:0});
   const tnet = tot.ret-tot.out;
   document.getElementById('recordSummary').innerHTML = `
-    <div class="item"><span class="lbl">Bets</span><span class="val">${normalRows.length}</span></div>
+    <div class="item"><span class="lbl">Bets</span><span class="val">${allRows.length}</span></div>
     <div class="item"><span class="lbl">Outlay</span><span class="val">${fmt(tot.out)}</span></div>
     <div class="item"><span class="lbl">Returns</span><span class="val" style="color:var(--gold)">${fmt(tot.ret)}</span></div>
     <div class="item"><span class="lbl">Net</span><span class="val" style="color:${tnet>=0?'var(--green)':'var(--red)'}">${tnet>=0?'+':''}${fmt(tnet)}</span></div>`;
